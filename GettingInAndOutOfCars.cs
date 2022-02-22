@@ -25,6 +25,32 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
     bool inCar = false;
 
+    void Start() 
+    {
+        if (!human)
+            ShowError("a character assigned");
+        
+        if (!humanCameraObj)
+            ShowError("a character camera assigned");
+        
+        if (!carCamera)
+            ShowError("a camera for the car assigned");
+            
+        if (human.activeSelf) //If the character is active, we expect ALL carcontrollers to be disabled (Though we could just make sure vehicles don't have UserControl scripts on them)
+        {
+            CarController [] controllers = FindObjectsOfType<CarController>();
+            for(int i = 0; i < controllers.Length; i++)
+            {
+                if (controllers[i].enabled)
+                    Debug.LogWarning(controllers[i].name + " has an enabled controller and may be receiving player input. Click this warning to see the vehicle.", controllers[i]);
+            }
+        }
+    }
+    
+    private void ShowError(string errorMessage)
+    {
+        Debug.LogError("You need "+errorMessage+" to the GTA script in order to get into and out of cars");
+    }
 
     // Update is called once per frame
     void Update()
