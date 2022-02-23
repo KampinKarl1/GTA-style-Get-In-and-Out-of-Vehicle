@@ -1,6 +1,8 @@
 # GTA-style-Get-In-and-Out-of-Vehicle
 A manager for getting into and out of vehicles in Unity
 
+Video Tutorial: https://www.youtube.com/watch?v=wPd61RvDDR0
+
 Import the following (free) Unity Standard Assets packages into your scene:
   Cameras
   Characters
