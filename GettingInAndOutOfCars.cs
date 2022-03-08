@@ -28,7 +28,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
             ShowError("a character assigned");
 
         if (!humanCameraObj)
-            ShowError("a character camera assigned");
+            Debug.Log("No camera for character is assigned to the GetIntoAndOutOfCars script (auto camera will be used).");
 
         if (!autoCamera)
             ShowError("an auto camera for the car/character assigned");
