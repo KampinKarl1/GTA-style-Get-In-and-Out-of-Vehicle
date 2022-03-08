@@ -35,7 +35,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         if (human.activeSelf) //If the character is active, we expect ALL carcontrollers to be disabled (Though we could just make sure vehicles don't have UserControl scripts on them)
         {
-            CarController[] controllers = FindObjectsOfType<CarController>();
+            CarUserControl[] controllers = FindObjectsOfType<CarUserControl>();
             for (int i = 0; i < controllers.Length; i++)
             {
                 if (controllers[i].enabled)
