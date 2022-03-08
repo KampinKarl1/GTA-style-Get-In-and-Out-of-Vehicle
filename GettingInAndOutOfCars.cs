@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityStandardAssets.Cameras;
-using UnityStandardAssets.Vehicles.Car;
 
 public class GettingInAndOutOfCars : MonoBehaviour
 {
     [Header("Cameras")]
-    [SerializeField] AutoCam carCamera = null;
+    [SerializeField] AutoCam autoCamera = null;
+    [Header("Camera Attached to or following a Character")]
+    [Header("Don't put anything here if you only use one camera")]
     [SerializeField] GameObject humanCameraObj = null; //If using a different camera for your character than for the car.
 
     [Header("Human")]
@@ -25,31 +22,31 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
     bool inCar = false;
 
-    void Start() 
+    void Start()
     {
         if (!human)
             ShowError("a character assigned");
-        
+
         if (!humanCameraObj)
             ShowError("a character camera assigned");
-        
-        if (!carCamera)
-            ShowError("a camera for the car assigned");
-            
+
+        if (!autoCamera)
+            ShowError("an auto camera for the car/character assigned");
+
         if (human.activeSelf) //If the character is active, we expect ALL carcontrollers to be disabled (Though we could just make sure vehicles don't have UserControl scripts on them)
         {
-            CarController [] controllers = FindObjectsOfType<CarController>();
-            for(int i = 0; i < controllers.Length; i++)
+            CarController[] controllers = FindObjectsOfType<CarController>();
+            for (int i = 0; i < controllers.Length; i++)
             {
                 if (controllers[i].enabled)
                     Debug.LogWarning(controllers[i].name + " has an enabled controller and may be receiving player input. Click this warning to see the vehicle.", controllers[i]);
             }
         }
     }
-    
+
     private void ShowError(string errorMessage)
     {
-        Debug.LogError("You need "+errorMessage+" to the GTA script in order to get into and out of cars");
+        Debug.LogError("You need " + errorMessage + " to the GTA script in order to get into and out of cars");
     }
 
     // Update is called once per frame
@@ -64,10 +61,10 @@ public class GettingInAndOutOfCars : MonoBehaviour
         }
     }
 
-    private bool CarNearby() 
+    private bool CarNearby()
     {
-        Collider[] cols = Physics.OverlapSphere(human.transform.position 
-            + human.transform.InverseTransformDirection(Vector3.forward * (closeDistance*.5f)), closeDistance); //do the check in front of the player
+        Collider[] cols = Physics.OverlapSphere(human.transform.position
+            + human.transform.InverseTransformDirection(Vector3.forward * (closeDistance * .5f)), closeDistance); //do the check in front of the player
 
         for (int i = 0; i < cols.Length; i++)
         {
@@ -80,7 +77,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
         return false;
     }
 
-    void GetOutOfCar() 
+    void GetOutOfCar()
     {
         inCar = false;
 
@@ -88,10 +85,16 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         human.transform.position = car.transform.position + car.transform.TransformDirection(Vector3.left);
 
-        //mCamera.SetTarget(human.transform);
-        carCamera.gameObject.SetActive(false);
 
-        humanCameraObj.SetActive(true);
+        if (humanCameraObj)
+        {
+            autoCamera.gameObject.SetActive(false);
+            humanCameraObj.SetActive(true);
+        }
+        else
+            autoCamera.SetTarget(human.transform);
+
+        
 
         userController.enabled = false;
 
@@ -103,7 +106,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
     }
 
-    void GetIntoCar() 
+    void GetIntoCar()
     {
         inCar = true;
 
@@ -115,8 +118,12 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         carEngine.enabled = true;
 
-        humanCameraObj.SetActive(false);
-        carCamera.gameObject.SetActive(true);
-        carCamera.SetTarget(car.transform);
+        if (humanCameraObj)
+        {
+            humanCameraObj.SetActive(false);
+            autoCamera.gameObject.SetActive(true);
+        }
+
+        autoCamera.SetTarget(car.transform);
     }
 }
