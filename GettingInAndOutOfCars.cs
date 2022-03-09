@@ -68,6 +68,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         for (int i = 0; i < cols.Length; i++)
         {
+            //This doesn't work if the vehicle is the child of something.
             if (cols[i].transform.root.TryGetComponent(out carEngine))
             {
                 car = cols[i].transform.root.gameObject;
