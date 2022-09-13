@@ -1,4 +1,5 @@
 
+[RequireComponent(typeof(CarUserControl))] //Puts usercontroller directly on here since it only needs ref to car to work
 public class GettingInAndOutOfCars : MonoBehaviour
 {
     [Header("Cameras")]
@@ -12,10 +13,15 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
     [SerializeField] float closeDistance = 15f;
 
-    [Space, Header("Car Stuff")]
-    [SerializeField] GameObject car = null;
-    CarUserControl userController = null;
-    [SerializeField] CarController carEngine = null;
+    GameObject car = null;
+    CarUserControl userController = null; //PLEASE UPDATE CARUSERCONTROL SCRIPT WITH the following method:
+    /*
+    *(This goes in CarUserControl script)
+    *
+    * public void SetCar(CarController car) => m_Car = car;
+    */
+    
+    CarController carEngine = null;
 
     [Header("Input")]
     [SerializeField] KeyCode enterExitKey = KeyCode.E;
@@ -33,15 +39,9 @@ public class GettingInAndOutOfCars : MonoBehaviour
         if (!autoCamera)
             ShowError("an auto camera for the car/character assigned");
 
-        if (human.activeSelf) //If the character is active, we expect ALL carcontrollers to be disabled (Though we could just make sure vehicles don't have UserControl scripts on them)
-        {
-            CarUserControl[] controllers = FindObjectsOfType<CarUserControl>();
-            for (int i = 0; i < controllers.Length; i++)
-            {
-                if (controllers[i].enabled)
-                    Debug.LogWarning(controllers[i].name + " has an enabled controller and may be receiving player input. Click this warning to see the vehicle.", controllers[i]);
-            }
-        }
+        userController = GetComponent<CarUserControl>();
+        //If the character is active, we expect car controller to be inactive (the inverse of character's active state)
+        userController.enabled = !human.activeSelf;
     }
 
     private void ShowError(string errorMessage)
@@ -84,7 +84,7 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         human.SetActive(true);
 
-        human.transform.position = car.transform.position + car.transform.TransformDirection(Vector3.left);
+        human.transform.position = car.transform.position + car.transform.TransformDirection(Vector3.left) + Vector3.up; //try not to fall through ground
 
 
         if (humanCameraObj)
@@ -95,15 +95,12 @@ public class GettingInAndOutOfCars : MonoBehaviour
         else
             autoCamera.SetTarget(human.transform);
 
-        
+
 
         userController.enabled = false;
+        userController.SetCar(null);
 
         carEngine.Move(0, 0, 1, 1);
-
-        userController = null;
-
-        Destroy(car.GetComponent<CarUserControl>());
 
     }
 
@@ -113,11 +110,11 @@ public class GettingInAndOutOfCars : MonoBehaviour
 
         human.SetActive(false);
 
-        userController = car.AddComponent<CarUserControl>();
+        carEngine.enabled = true;
 
         userController.enabled = true;
+        userController.SetCar(carEngine);
 
-        carEngine.enabled = true;
 
         if (humanCameraObj)
         {
