@@ -1,3 +1,14 @@
+THERE IS NOW A TINY BIT OF EFFORT REQUIRED FROM THE USER!
+
+THE GETTING IN AND OUT OF CAR SCRIPT REQUIRES THAT YOU ADD THE METHOD
+public void SetCar(CarController car) => m_Car = car;
+to the Unity Standard Assets script "CarUserControl"
+
+The above allows for caching the CarUserControl script once at Start - the CarUserControl script doesn't have to be on the vehicle you're using,
+it just has to have a reference to the vehicle it is controlling.
+
+
+
 # GTA-style-Get-In-and-Out-of-Vehicle
 A manager for getting into and out of vehicles in Unity
 
