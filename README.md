@@ -1,11 +1,5 @@
-THERE IS NOW A TINY BIT OF EFFORT REQUIRED FROM THE USER!
-
-THE GETTING IN AND OUT OF CAR SCRIPT REQUIRES THAT YOU ADD THE METHOD
-public void SetCar(CarController car) => m_Car = car;
-to the Unity Standard Assets script "CarUserControl"
-
-The above allows for caching the CarUserControl script once at Start - the CarUserControl script doesn't have to be on the vehicle you're using,
-it just has to have a reference to the vehicle it is controlling.
+HEY ALL, This project is currently in life support because Unity stopped offering vehicle controllers for free. 
+I'll get a rigidbody vehicle working so you guys have something to work with that doesn't suck too much and then I'll clean up the code here because there are some coupling issues I'd like to eliminate. SO SORRY FOR THE INCONVENIENCE. This tutorial has been out for a few years now, I didn't think Unity would stop supporting their Standard Assets and Vehicles so soon.
 
 
 
