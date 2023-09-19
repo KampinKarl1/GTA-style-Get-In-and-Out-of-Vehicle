@@ -1,4 +1,40 @@
 
+using UnityEngine;
+using UnityStandardAssets.Vehicles.Car;
+
+/*
+
+//If the Unity Standard Assets used in the video tutorial are not available to you anymore, build out the following three classes (CarUserControl, 
+//    CarController, AutoCam)
+
+namespace UnityStandardAssets
+{
+    namespace Vehicles 
+    {
+        namespace Car 
+        {
+            public class CarUserControl : MonoBehaviour
+            {
+                public void SetCar(CarController car) { }
+            }
+            public class CarController : MonoBehaviour
+            {
+                public void Move(float x, float y, float z, float w)
+                {
+                    
+                }
+            }
+        }
+    }
+
+}
+
+public class AutoCam : MonoBehaviour
+{
+    public void SetTarget(object target) { }
+}
+*/
+
 [RequireComponent(typeof(CarUserControl))] //Puts usercontroller directly on here since it only needs ref to car to work
 public class GettingInAndOutOfCars : MonoBehaviour
 {
